@@ -1,5 +1,5 @@
 /* 
- *   rollup-plugin-devsuite
+ *   devsuite
  *   client.js
  */
 var port = "%port%";
@@ -7,26 +7,25 @@ var host = "%host%";
 
 function onMessage(e) {
     const data = e.data;
-    if(data === "") {
+    if (data === "") {
         return location.reload();
     }
     var update = JSON.parse(data);
     switch (update.type) {
         case "css":
             var wasFound = false;
-            //TODO: make it into a normal for loop in order for it to be even faster
             document.head.childNodes.forEach(el => {
-                if(el.localName === "link" && el.rel === "stylesheet"){ 
+                if (el.localName === "link" && el.rel === "stylesheet") {
                     var src = el.href.replace(location.origin + "/", "").replace(/\?.*$/, "");
                     console.log(src);
-                    
-                    if(src == update.file && !wasFound) {
+
+                    if (src == update.file && !wasFound) {
                         wasFound = true;
                         el.href = el.href + "?v=" + new Date().getTime();
                     }
                 }
             })
-            if(!wasFound) {
+            if (!wasFound) {
                 location.reload();
             }
 
@@ -37,14 +36,16 @@ function onMessage(e) {
 }
 
 function onClose(params) {
-    setTimeout(connect, 1000);   
+    setTimeout(connect, 1000);
 }
 
 function connect() {
-    var ws = new WebSocket("ws://"+host+":"+port);
+    var ws = new WebSocket("ws://" + host + ":" + port);
     ws.onmessage = onMessage;
     ws.onclose = onClose;
 }
 
-connect();
+try {
+    connect();
+} catch (ignore) {}
 /* end of client.js */
