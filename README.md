@@ -1,6 +1,6 @@
 # rollup-plugin-devsuite
 
-![DevSuiteLogo](./logo/DevSuite.png)
+![DevSuiteLogo](https://raw.githubusercontent.com/anton7r/rollup-plugin-devsuite/HEAD/logo/DevSuite.png)
 
 live-reloading devserver HMR plugin with hot css swaps.
 
