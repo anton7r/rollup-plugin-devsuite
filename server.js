@@ -57,7 +57,7 @@ module.exports.start = function (opts) {
     });
 
     send = data => {
-        w.clients.forEach(c => c.send(data))
+        w.clients.forEach(c => c.send(data ? JSON.stringify(data) : ""))
     }
 
     server.listen(opts.port);
@@ -70,7 +70,7 @@ function genHash(file) {
 }
 
 module.exports.update = (filename, content) => {
-    const ext = path.extname(filename);
+    const ext = path.extname(filename).replace(".", "");
 
     const hash = genHash(content);
     if (updated[filename] === hash) return;
@@ -79,14 +79,19 @@ module.exports.update = (filename, content) => {
     if (!virtualdir[filename] || virtualdir[filename] !== content) {
         //the file is either new or it has updated
         virtualdir[filename] = content;
-        if (ext === ".css") {
-            send(JSON.stringify({
-                type: "css",
-                file: filename
-            }));
-        } else if (ext === ".js") {
-            //refresh
-            send("");
+        
+        switch (ext) {
+            case "css":
+                send({
+                    type: ext,
+                    filename,
+                    data: content.toString()
+                });
+                break;
+            
+            default:
+                send();
+                break;
         }
     }
 }

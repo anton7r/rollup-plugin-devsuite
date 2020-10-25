@@ -1,21 +1,63 @@
 # rollup-plugin-devsuite
 
-live-reloading devserver plugin with hot css swaps.
+![DevSuiteLogo](./logo/DevSuite.png)
 
-in heavy development...
+live-reloading devserver HMR plugin with hot css swaps.
 
-- needs proxies implemented...
-- instead of listening for file changes in the dist directory, it could use rollup build hooks.
+If you are looking for javascript HMR look in to these tools instead: [Nollup](https://github.com/PepsRyuu/nollup), [Snowpack](https://www.snowpack.dev/), [Parcel](https://parceljs.org/) or [Vite](https://github.com/vitejs/vite)
 
-instead of needing to install `rollup-plugin-serve`, `rollup-plugin-livereload`
+## Features
 
-you only need to install `rollup-plugin-devsuite` and you also get hotcss swaps.
+- Lightweight
 
-Note: this does not have hot module reloads, if you would like to have that use [nollup](https://github.com/PepsRyuu/nollup) instead.
+- Development server
+
+- Css hot reloads
+
+- Websocket tries to autoreconnect when the connection is lost
+
+- Ease of use
 
 ## Configuring
 
-!prod && devsuite({ dir:"public", port:3000, host:"localhost" })
+`rollup.config.js`
+
+```js
+import devsuite from "rollup-plugin-devsuite";
+
+const prod = !process.env.ROLLUP_WATCH;
+
+export default {
+
+    //...
+
+    plugins: [
+
+        //...
+
+        !prod && devsuite({
+            dir: "public", //default
+            port: 3000, //default
+            host: "localhost", //default
+            index: "index.html" //default
+        })
+    ]
+}
+```
+
+## Todo before 1.0
+
+- implement proxies
+
+## Release notes
+
+### 0.1.0
+
+css hot reloading is now quite alot faster because the websocket server gives the client the updated css file entirely, so that the client wont have to fetch the updated content from the server.
+
+### 0.0.2
+
+add the option to change the index of the app
 
 ## Why
 
