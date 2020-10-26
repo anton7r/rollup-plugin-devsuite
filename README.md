@@ -51,6 +51,14 @@ export default {
 
 ## Release notes
 
+### 0.1.2
+
+fix configuration bug
+
+### 0.1.1
+
+fix logo
+
 ### 0.1.0
 
 css hot reloading is now quite alot faster because the websocket server gives the client the updated css file entirely, so that the client wont have to fetch the updated content from the server.

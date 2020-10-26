@@ -1,6 +1,10 @@
 const server = require("./server");
 
-module.exports = ( opts = { dir:"public", port:3000, host:"localhost", index:"index.html" } ) => {
+const defaultOpts = { dir:"public", port:3000, host:"localhost", index:"index.html" };
+
+module.exports = (opts) => {
+    opts = { ...defaultOpts, ...opts }
+
     var clientCode = require("fs").readFileSync(require.resolve("./client/client.js", "utf-8")).toString().replace("%port%", opts.port).replace("%host%", opts.host);
 
     server.start(opts);
