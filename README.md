@@ -46,7 +46,7 @@ export default {
 }
 ```
 
-### Configuring proxies
+### Configuring proxies (Coming soon...)
 
 The proxy can be used to map a route on the devserver for example to your api
 
