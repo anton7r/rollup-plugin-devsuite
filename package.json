@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-devsuite",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "lightweight devserver with livereload and hotcss swaps",
   "main": "index.js",
   "module": "index.js",
