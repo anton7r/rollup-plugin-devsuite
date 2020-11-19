@@ -66,7 +66,7 @@ proxy: {"/api/": "example.com/api"}
 //...
 ```
 
-Both of these following examples should be identical
+Both of these following examples should give an identical result
 
 ```js
 //...
