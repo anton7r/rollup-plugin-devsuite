@@ -2,6 +2,7 @@ const fs = require("fs");
 const WebSocket = require("ws");
 const path = require("path");
 const crypto = require("crypto");
+const http = require("http");
 
 var virtualdir;
 var send;
@@ -10,14 +11,13 @@ module.exports.start = function (opts) {
 
     function getAllFiles(dirname) {
         var dir = {};
-        var filepaths = fs.readdirSync(dirname);
-        filepaths.forEach(filename => {
-            if (fs.statSync(path.join(dirname, filename)).isFile()) {
-                dir[filename] = fs.readFileSync(path.join(dirname, filename));
+        fs.readdirSync(dirname).forEach(uri => {
+            if (fs.statSync(path.join(dirname, uri)).isFile()) {
+                dir[uri] = fs.readFileSync(path.join(dirname, uri));
             } else {
-                var subdir = getAllFiles(path.join(dirname, filename));
+                var subdir = getAllFiles(path.join(dirname, uri));
                 for (key in subdir) {
-                    dir[path.join(filename, key)] = subdir[key];
+                    dir[uri+"/"+key] = subdir[key];
                 }
             }
         })
@@ -27,8 +27,9 @@ module.exports.start = function (opts) {
 
     virtualdir = getAllFiles(opts.dir);
 
-    var server = require("http").createServer((req, res) => {
-        const url = req.url.replace("/", "").replace(/\?.*$/, "");
+    var server = http.createServer((req, res) => {
+
+        const url = req.url.replace("/", "").replace(/\[#?].*$/, "");
         var type = req.headers.accept.split(",")[0];
 
         if (path.extname(url) === ".js") {

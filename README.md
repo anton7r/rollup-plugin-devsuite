@@ -39,10 +39,23 @@ export default {
             dir: "public", //default
             port: 3000, //default
             host: "localhost", //default
-            index: "index.html" //default
+            index: "index.html", //default
+            proxy: {} //default
         })
     ]
 }
+```
+
+### Configuring proxies
+
+The proxy can be used to map a route on the devserver for example to your api
+
+Basically the following example maps `localhost:3000/api/hello` to `api.example.com/hello`
+
+```js
+...
+proxy: {"/api/": "api.example.com"}
+...
 ```
 
 ## Todo before 1.0
@@ -50,6 +63,10 @@ export default {
 - implement proxies
 
 ## Release notes
+
+### 0.1.3
+
+Fix route matching with files in subfolders
 
 ### 0.1.2
 

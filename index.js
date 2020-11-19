@@ -1,6 +1,6 @@
 const server = require("./server");
 
-const defaultOpts = { dir:"public", port:3000, host:"localhost", index:"index.html" };
+const defaultOpts = { dir:"public", port:3000, host:"localhost", index:"index.html", proxy:{} };
 
 module.exports = (opts) => {
     opts = { ...defaultOpts, ...opts }

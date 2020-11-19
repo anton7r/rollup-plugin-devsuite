@@ -8,6 +8,6 @@
   "author": "anton7r",
   "license": "MIT",
   "dependencies": {
-    "ws": "^7.3.1"
+    "ws": "^7.4.0"
   }
 }
