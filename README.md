@@ -53,36 +53,57 @@ The proxy can be used to map a route on the devserver for example to your api
 Basically the following example maps `localhost:3000/api/hello` to `api.example.com/hello`
 
 ```js
-...
+//...
 proxy: {"/api/": "api.example.com"}
-...
+//...
+```
+
+or you could map `localhost:3000/api/hello` to `example.com/api/hello` with this
+
+```js
+//...
+proxy: {"/api/": "example.com/api"}
+//...
+```
+
+Both of these following examples should be identical
+
+```js
+//...
+proxy: {"/api/": ...}
+proxy: {"/api": ...}
+//...
 ```
 
 ## Todo before 1.0
 
-- implement proxies
+- stability improvements
 
 ## Release notes
 
+### 0.2.0
+
+Added: proxies
+
 ### 0.1.3
 
-Fix route matching with files in subfolders
+Fixed: route matching with files in subfolders
 
 ### 0.1.2
 
-fix configuration bug
+Fixed: a bug that would prevent the default configuration to be overridden
 
 ### 0.1.1
 
-fix logo
+Fixed: logo
 
 ### 0.1.0
 
-css hot reloading is now quite alot faster because the websocket server gives the client the updated css file entirely, so that the client wont have to fetch the updated content from the server.
+Improved: css hot reloading is now quite alot faster because the websocket server gives the client the updated css file entirely, so that the client wont have to fetch the updated content from the server.
 
 ### 0.0.2
 
-add the option to change the index of the app
+Added: the option to change the index of the app
 
 ## Why
 

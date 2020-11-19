@@ -9,6 +9,16 @@ var send;
 
 module.exports.start = function (opts) {
 
+    //formalize the keys of proxies
+    var proxies = {};
+    for(key in opts.proxy) {
+        var newKey = key;
+        if(key.startsWith("/")) {
+            newKey = key.replace("/", "")
+        }
+        proxies[newKey] = opts.proxy[key];
+    }
+
     function getAllFiles(dirname) {
         var dir = {};
         fs.readdirSync(dirname).forEach(uri => {
@@ -28,8 +38,45 @@ module.exports.start = function (opts) {
     virtualdir = getAllFiles(opts.dir);
 
     var server = http.createServer((req, res) => {
+        const baseUrl = req.url.replace("/", "");
 
-        const url = req.url.replace("/", "").replace(/\[#?].*$/, "");
+        for(proxy in proxies) {
+            if(baseUrl.startsWith(proxy)) {
+                
+                var h = proxies[proxy].split("/");
+                if(!h[1]) {
+                    h[1] = "/"
+                } else {
+                    h[1] = "/" + h[1];
+                }
+
+                var split = h[0].split(":");
+                if(split.length === 1) {
+                    split[1] = 80;
+                } else {
+                    split[1] = Number(split[1]);
+                }
+
+                const options = {
+                    host: split[0],
+                    port: split[1],
+                    method: req.method,
+                    path: (h[1] + baseUrl.replace(proxy, "")).replace(/\/\//g, "/"),
+                    headers: req.headers
+                }
+
+                var proxyReq = http.request(options, function (r) {
+                    res.writeHead(r.statusCode, r.headers)
+                    r.pipe(res, {end: true})
+                })
+
+                req.pipe(proxyReq, {end: true})
+
+                return;
+            }
+        }
+
+        const url = baseUrl.replace(/\[#?].*$/, "");
         var type = req.headers.accept.split(",")[0];
 
         if (path.extname(url) === ".js") {
@@ -105,7 +152,6 @@ const getError = errorFile => {
     if (page) {
         return page;
     } else {
-
         if (!errorcss) {
             errorcss = "<style>" + fs.readFileSync(require.resolve("./errors/errors.css"), "utf-8").replace(/[ \n\r]/g, "") + "</style>";
         }
