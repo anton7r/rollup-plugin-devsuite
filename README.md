@@ -81,6 +81,12 @@ proxy: {"/api": ...}
 
 ## Release notes
 
+### 0.2.1
+
+Added links to the repository
+
+
+
 ### 0.2.0
 
 Added: proxies

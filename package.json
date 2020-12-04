@@ -9,5 +9,7 @@
   "license": "MIT",
   "dependencies": {
     "ws": "^7.4.0"
-  }
+  },
+  "repository": "github.com/anton7r/rollup-plugin-devsuite",
+  "homepage": "github.com/anton7r/rollup-plugin-devsuite"
 }
